@@ -16,7 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from . import views
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    # Other URL patterns
+    path('submit_annotation', views.submit_annotation, name='submit_annotation'),
 ]
