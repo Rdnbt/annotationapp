@@ -1,13 +1,28 @@
+import random
+import os 
+import csv
 from django.shortcuts import render
-from .models import ImageAnnotation
+from django.conf import settings
 
 def label_image(request):
-    # Retrieve a random image annotation from the database
-    image_annotation = ImageAnnotation.objects.order_by('?').first()
-    image_path = image_annotation.image_path
+    # Read the captions from the CSV file
+    with open('/Users/erdenebat/Projects/annotationapp/image_labeling/data/output_1000.csv', 'r') as csvfile:
+        reader = csv.reader(csvfile, delimiter='|')
+        image_captions = list(reader)
 
-    # Pass the image path to the template
-    context = {'image_path': image_path}
+   # Randomly select an image and its caption
+    image_caption = random.choice(image_captions)
+    image_filename = image_caption[0]
+    caption = image_caption[2]
 
-    # Render the template with the image path
-    return render(request, 'label_image.html', context)
+    # Update the image path
+    image_path = os.path.join(settings.STATIC_URL, 'flickr1000', image_filename)
+    
+    if request.method == 'POST':
+        annotation = request.POST.get('annotation')
+        print(annotation)  # Print the annotation to the console
+
+    # Pass the image path and caption to the template
+    context = {'image_path': image_path, 'caption': caption}
+
+    return render(request, 'label_image.html', context) 
