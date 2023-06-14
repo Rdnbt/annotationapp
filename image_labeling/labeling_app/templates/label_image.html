@@ -1,89 +1,30 @@
-{% load static %}
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Image Labeling</title>
+    <title>Label the Image</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        
-        h1 {
-            margin-bottom: 20px;
-        }
-        
         #image-container {
-            margin-bottom: 20px;
-        }
-        
-        #annotation-input {
-            width: 300px;
-            height: 30px;
-            margin-bottom: 10px;
-        }
-        
-        #submit-button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
             text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            cursor: pointer;
+        }
+
+        #image {
+            max-width: 500px;
+            max-height: 500px;
         }
     </style>
 </head>
 <body>
     <h1>Label the Image</h1>
     <div id="image-container">
-        <img id="image" src="{% static 'path_to_image.jpg' %}" alt="Image">
+        <img id="image" src="{{ image_path }}" alt="Image">
     </div>
-    <input id="annotation-input" type="text" placeholder="Enter Mongolian annotation">
-    <br>
-    <button id="submit-button" onclick="submitAnnotation()">Submit</button>
-    
-    <script>
-        // Image data
-        var imageData = [
-            "{% static 'path_to_image1.jpg' %}",
-            "{% static 'path_to_image2.jpg' %}",
-            // Add more image paths as needed
-        ];
-        
-        var currentIndex = 0;
-        var annotationInput = document.getElementById("annotation-input");
-        var imageElement = document.getElementById("image");
-        
-        // Function to load the next image
-        function loadNextImage() {
-            if (currentIndex >= imageData.length) {
-                alert("All images have been labeled!");
-                return;
-            }
-            
-            var currentImage = imageData[currentIndex];
-            imageElement.src = currentImage;
-            annotationInput.value = "";
-            
-            currentIndex++;
-        }
-        
-        // Function to handle annotation submission
-        function submitAnnotation() {
-            var annotation = annotationInput.value;
-            
-            // Validate annotation if needed
-            
-            // Save the annotation and perform any necessary actions
-            
-            loadNextImage();
-        }
-        
-        // Load the initial image
-        loadNextImage();
-    </script>
+    <p>{{ caption }}</p>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <label for="annotation">Enter Annotation:</label>
+        <input type="text" name="annotation" id="annotation" required>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
 </body>
 </html>

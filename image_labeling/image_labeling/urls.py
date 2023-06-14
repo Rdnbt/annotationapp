@@ -21,4 +21,11 @@ from labeling_app import views
 urlpatterns = [
     path('', views.label_image, name='label_image'),
 ]
+from django.conf import settings
+from django.conf.urls.static import static
+
+# ... your existing URL patterns ...
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
