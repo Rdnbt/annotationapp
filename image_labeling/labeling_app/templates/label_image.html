@@ -2,18 +2,43 @@
 <html>
 <head>
     <title>Label the Image</title>
-    <link rel="stylesheet" type="text/css" href="label_image.css"> 
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+        
+        .annotation {
+            margin-top: 20px;
+        }
+
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Label the Image</h1>
         <p>Remaining Count: {{ remaining_count }}</p>
         <img src="{{ image_path }}" alt="Image">
-        <p>{{ caption }}</p>
+        <p>Flickr30K Original:{{ caption_en }}</p>
+        <p>NMT Annotation: {{ caption_mn }}</p>
         <form method="POST" action="{% url 'label_image' %}">
             {% csrf_token %}
-            <label for="annotation">Annotation:</label>
-            <textarea id="annotation" name="annotation" rows="4" cols="50"></textarea>
+            <label for="annotation">Improved Annotation:</label>
+            <textarea id="annotation" name="annotation" rows="1" cols="50"></textarea>
             <br>
             <input type="submit" value="Submit">
         </form>

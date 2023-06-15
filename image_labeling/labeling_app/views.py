@@ -8,14 +8,15 @@ from django.conf import settings
 
 def label_image(request):
     # Read the captions from the CSV file
-    with open('/Users/erdenebat/Projects/annotationapp/image_labeling/data/output_1000.csv', 'r') as csvfile:
+    with open('/Users/erdenebat/Projects/annotationapp/image_labeling/data/triplet_1000.csv', 'r') as csvfile:
         reader = csv.reader(csvfile, delimiter='|')
         image_captions = list(reader)
 
     # Randomly select an image and its caption
     image_caption = random.choice(image_captions)
     image_filename = image_caption[0]
-    caption = image_caption[2]
+    caption_en = image_caption[2]
+    caption_mn = image_caption[3]
 
     # Update the image path
     image_path = os.path.join(settings.STATIC_URL, 'flickr1000', image_filename)
@@ -32,7 +33,7 @@ def label_image(request):
     current_count = get_current_count()
 
     # Pass the image path, caption, and current count to the template
-    context = {'image_path': image_path, 'caption': caption, 'current_count': current_count}
+    context = {'image_path': image_path, 'caption_en': caption_en, 'caption_mn':caption_mn, 'current_count': current_count}
 
     return render(request, 'label_image.html', context)
 
@@ -50,7 +51,7 @@ def save_annotation(image_filename, annotation):
 
         # Write the header row if the file doesn't exist
         if not file_exists:
-            writer.writerow(['image_name', 'comment_number', 'comment'])
+            writer.writerow(['image_name', 'comment_number', 'comment', 'Translated_Comment'])
 
         # Determine the comment number based on the existing annotations
         comment_number = get_comment_number(annotation_file, image_filename)
