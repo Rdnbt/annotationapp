@@ -2,29 +2,21 @@
 <html>
 <head>
     <title>Label the Image</title>
-    <style>
-        #image-container {
-            text-align: center;
-        }
-
-        #image {
-            max-width: 500px;
-            max-height: 500px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="label_image.css"> 
 </head>
 <body>
-    <h1>Label the Image</h1>
-    <div id="image-container">
-        <img id="image" src="{{ image_path }}" alt="Image">
+    <div class="container">
+        <h1>Label the Image</h1>
+        <p>Remaining Count: {{ remaining_count }}</p>
+        <img src="{{ image_path }}" alt="Image">
+        <p>{{ caption }}</p>
+        <form method="POST" action="{% url 'label_image' %}">
+            {% csrf_token %}
+            <label for="annotation">Annotation:</label>
+            <textarea id="annotation" name="annotation" rows="4" cols="50"></textarea>
+            <br>
+            <input type="submit" value="Submit">
+        </form>
     </div>
-    <p>{{ caption }}</p>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <label for="annotation">Enter Annotation:</label>
-        <input type="text" name="annotation" id="annotation" required>
-        <br>
-        <input type="submit" value="Submit">
-    </form>
 </body>
 </html>
